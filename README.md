@@ -35,3 +35,18 @@ In this second tutorial, I show how to use Docker to train the same Vanilla auto
 **NOTE** I first install `pip` inside my conda env and then I use this verison of `pip` to install the python dependecies (e.g., torch etc.) via a `requirements.txt` file. 
 I tried also installing the python dependencies directly via `conda`, however, I am encountering some issues of the packages not being found (I suspect this is to do with my mac M1 for which Conda does not provide the packages).
 This doesn't really matter as long as I use the pip verison installed in the conda environemnt and NOT! the system `pip` (i.e., by installing pip inside the conda env).
+
+
+## Tut.3: **docker_nvidia**:
+In this tutorial I run PyTorch with CUDA inside a container, while creating a conda environment.
+To do so optimally, I take the official nvidia container image, which should ensure everything is optimized.
+This requires (?) installing the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+To install it, I followed this [tutorial](https://medium.com/@u.mele.coding/a-beginners-guide-to-nvidia-container-toolkit-on-docker-92b645f92006).
+After that and based on NVIDIA official configurations, I run,
+```
+# Configure the container runtime by using the nvidia-ctk command
+sudo nvidia-ctk runtime configure --runtime=docker
+# Restart the Docker daemon:
+sudo systemctl restart docker
+```
+
