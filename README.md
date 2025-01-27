@@ -1,7 +1,7 @@
 # Docker for Deep Learning
 In this repository, I include a series of tutorials on how to deploy ML algorithms within Docker. 
 
-*Key points**
+*Key points for best practice**
 
 1. I think whenever possible use the [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda) image if you need to run PyTorch with GPUs within a container.
 
