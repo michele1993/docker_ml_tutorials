@@ -39,8 +39,7 @@ This doesn't really matter as long as I use the pip verison installed in the con
 
 ## Tut.3: **docker_nvidia**:
 In this tutorial I run PyTorch with CUDA inside a container, while creating a conda environment.
-To do so optimally, I take the official nvidia container [image](https://hub.docker.com/r/nvidia/cuda), which should ensure everything is optimized.
-This requires (?) installing the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+Before doing so, I need to install the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) to be able to exploit 'GPU-accelerated' containers.
 To install it, I followed this [tutorial](https://medium.com/@u.mele.coding/a-beginners-guide-to-nvidia-container-toolkit-on-docker-92b645f92006).
 After that and based on NVIDIA official configurations, I run,
 ```
@@ -49,4 +48,5 @@ sudo nvidia-ctk runtime configure --runtime=docker
 # Restart the Docker daemon:
 sudo systemctl restart docker
 ```
+Finally, I take the official nvidia container [image](https://hub.docker.com/r/nvidia/cuda), which should ensure everything is optimized.
 
