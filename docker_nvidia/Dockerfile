@@ -1,7 +1,46 @@
-FROM nvidia/cuda:11.0.3-base-ubuntu20.04
+ARG UBUNTU_VERSION=22.04
+ARG CUDA_VERSION=11.8.0
+FROM nvidia/cuda:${CUDA_VERSION}-base-ubuntu${UBUNTU_VERSION}
 
-RUN conda env create -f environment.yml
+# Set environment variables for non-interactive installation
+# This ensures you will not be prompted for inputs during installation
+ENV DEBIAN_FRONTEND=noninteractive
 
-SHELL ["conda", "run", "-n", "docker_nvidia", "/bin/bash", "-c"]
+# Remove any third-party apt sources to avoid issues with expiring keys.
+RUN rm -f /etc/apt/sources.list.d/*.list
 
-CMD ["python", "-c", "import torch; torch.cuda.current_device()"] 
+# Install some basic utilities.
+RUN apt-get update && apt-get install -y \
+    curl \
+    ca-certificates \
+    sudo \
+    git \
+    bzip2 \
+    libx11-6 \
+ && rm -rf /var/lib/apt/lists/*
+
+
+# Create a working directory.
+RUN mkdir /app
+WORKDIR /app
+
+
+# Install conda
+# Set up the Conda environment
+ENV CONDA_AUTO_UPDATE_CONDA=false 
+ENV PATH=/opt/conda/bin:$PATH
+
+COPY environment.yml /app/environment.yml
+COPY requirements.txt /app/requirements.txt
+
+RUN curl -sLo ~/miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh \
+ && chmod +x ~/miniconda.sh \
+ && ~/miniconda.sh -b -p /opt/conda \
+ && rm ~/miniconda.sh \
+ && conda env create -f environment.yml \
+ && rm /app/environment.yml /app/requirements.txt\
+ && conda clean -ya
+
+#SHELL ["conda", "run", "-n", "docker_nvidia", "/bin/bash", "-c"]
+
+CMD ["conda", "run", "-n","docker_nvidia",  "python", "-c", "import torch; torch.cuda.current_device()"] 
