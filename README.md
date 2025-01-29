@@ -53,6 +53,8 @@ Finally, I take the official nvidia container [image](https://hub.docker.com/r/n
 After some investigation, I tried to create a `Dockerfile` that achieves the purpose while not taking up too much memory (although the image is still 9.2GB).  
 I think this can be optimised more and perhaps Conda is not the best option, looking into [poetry](https://python-poetry.org/) may be a better option and if I need to install non-python dependecies (e.g., to run other stuff) I should be able to create another container with conda and use Docker Compose.
 
+**NOTE** In the  `Dockerfile`, I install mini-forge instead of miniconda beacuse my institution doesn't have a licese for Anconda. The `conda_Dockerfile` does the same but for miniconda.
+
 It is really important when you run the container to add the `--gpus=all` flag otherwise no GPU will be detected, they also reccomend yo use the `--ipc=host` flag if using multiproccessing (see [this](https://github.com/pytorch/pytorch#docker-image) for more info). For instance,
 ```
 sudo docker run --rm --gpus=all --ipc=host CONTAINER_NAME

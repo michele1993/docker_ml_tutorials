@@ -33,22 +33,15 @@ ENV PATH=/opt/conda/bin:$PATH
 COPY environment.yml /app/environment.yml
 COPY requirements.txt /app/requirements.txt
 
-RUN curl -sLo ~/miniforge.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh \
- && chmod +x ~/miniforge.sh \
- && ~/miniforge.sh -b -p /opt/conda \
- && rm ~/miniforge.sh \
+RUN curl -sLo ~/miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh \
+ && chmod +x ~/miniconda.sh \
+ && ~/miniconda.sh -b -p /opt/conda \
+ && rm ~/miniconda.sh \
  && conda env create -f environment.yml \
  && rm /app/environment.yml /app/requirements.txt\
  && conda clean -ya
 
 #SHELL ["conda", "run", "-n", "docker_nvidia", "/bin/bash", "-c"]
-# Demonstrate the environment is working by loading a shipped Conda package
-#RUN echo "Make sure torch is installed:"
-#RUN python -c "import torch"
-#ENTRYPOINT ["/bin/bash", "-c", "ls -la /opt/conda/condabin > /app/directory_contents.txt"] 
 
-
-# Run python script within the conda env
-#ENTRYPOINT ["conda", "run", "-n","docker_nvidia",  "python"]
 # Deafult shows if cuda avilable if no input provide
 CMD ["conda", "run", "-n","docker_nvidia",  "python", "-c", "import torch; print(torch.cuda.current_device())"] 
