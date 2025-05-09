@@ -26,5 +26,5 @@ RUN python -c "import torch"
 RUN python -c "from get_mnist import get_data; get_data('${DATA_PATH}')"
 
 # # The code to run when container is started:
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "docker_conda_tutorial", "python", "main.py"]
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "docker_conda_tutorial", "python"]
 
